@@ -1,0 +1,44 @@
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-medium);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+}
+
+.team-badge--sm { padding: 4px 10px; gap: 6px; }
+.team-badge--lg { padding: 10px 20px; gap: 10px; }
+
+.team-badge__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--team-color);
+  box-shadow: 0 0 8px var(--team-color);
+  flex-shrink: 0;
+}
+
+.team-badge--sm .team-badge__dot { width: 8px; height: 8px; }
+.team-badge--lg .team-badge__dot { width: 14px; height: 14px; }
+
+.team-badge__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.team-badge--sm .team-badge__name { font-size: 0.75rem; }
+.team-badge--lg .team-badge__name { font-size: 1rem; }
+
+.team-badge__count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--team-color);
+  background: var(--bg-input);
+  padding: 1px 7px;
+  border-radius: 100px;
+}
