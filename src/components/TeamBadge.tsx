@@ -9,7 +9,7 @@ interface TeamBadgeProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const TeamBadge: React.FC<TeamBadgeProps> = ({ team, config, count, size = 'md' }) => {
+const TeamBadge: React.FC<TeamBadgeProps> = ({ config, count, size = 'md' }) => {
   return (
     <div className={`team-badge team-badge--${size}`} style={{ '--team-color': config.color } as React.CSSProperties}>
       <div className="team-badge__dot" />

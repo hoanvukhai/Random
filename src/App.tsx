@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AnimatePresence } from 'framer-motion';
 import { useGameState } from './hooks/useGameState';
 import SetupScreen from './components/SetupScreen';
