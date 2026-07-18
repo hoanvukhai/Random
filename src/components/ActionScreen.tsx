@@ -13,6 +13,7 @@ interface ActionScreenProps {
   onDraw: () => void;
   onViewSummary: () => void;
   onGoToSetup: () => void;
+  onReshuffle: () => void;
 }
 
 type CardPhase = 'idle' | 'flipping' | 'revealed';
@@ -24,6 +25,7 @@ const ActionScreen: React.FC<ActionScreenProps> = ({
   onDraw,
   onViewSummary,
   onGoToSetup,
+  onReshuffle,
 }) => {
   const [cardPhase, setCardPhase] = useState<CardPhase>('idle');
   // The result currently shown on the flipped card
@@ -194,40 +196,61 @@ const ActionScreen: React.FC<ActionScreenProps> = ({
               Tiếp tục ▶
             </motion.button>
           ) : (
-            <motion.button
-              key="draw-btn"
-              className="draw-btn"
-              onClick={handleDraw}
-              disabled={cardPhase === 'flipping'}
-              whileHover={cardPhase === 'idle' ? { scale: 1.03 } : {}}
-              whileTap={cardPhase === 'idle' ? { scale: 0.96 } : {}}
+            <motion.div
+              key="draw-group"
+              className="draw-group"
               initial={{ opacity: 0, y: 10 }}
-              animate={cardPhase === 'idle' ? {
-                opacity: 1,
-                y: 0,
-                boxShadow: [
-                  '0 8px 30px rgba(99,102,241,0.4)',
-                  '0 8px 50px rgba(99,102,241,0.65)',
-                  '0 8px 30px rgba(99,102,241,0.4)',
-                ],
-              } : { opacity: 1, y: 0 }}
-              transition={cardPhase === 'idle' ? {
-                opacity: { duration: 0.2 },
-                y: { duration: 0.2 },
-                boxShadow: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-              } : { duration: 0.2 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              id="btn-draw"
             >
-              {cardPhase === 'flipping' ? (
-                <span>✨ Đang rút...</span>
-              ) : (
-                <>
-                  <span className="draw-btn__icon">🎲</span>
-                  Nhấn để rút thăm
-                </>
-              )}
-            </motion.button>
+              <motion.button
+                className="draw-btn"
+                onClick={handleDraw}
+                disabled={cardPhase === 'flipping'}
+                whileHover={cardPhase === 'idle' ? { scale: 1.03 } : {}}
+                whileTap={cardPhase === 'idle' ? { scale: 0.96 } : {}}
+                animate={cardPhase === 'idle' ? {
+                  boxShadow: [
+                    '0 8px 30px rgba(99,102,241,0.4)',
+                    '0 8px 50px rgba(99,102,241,0.65)',
+                    '0 8px 30px rgba(99,102,241,0.4)',
+                  ],
+                } : {}}
+                transition={cardPhase === 'idle' ? {
+                  boxShadow: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
+                } : {}}
+                id="btn-draw"
+              >
+                {cardPhase === 'flipping' ? (
+                  <span>✨ Đang rút...</span>
+                ) : (
+                  <>
+                    <span className="draw-btn__icon">🎲</span>
+                    Nhấn để rút thăm
+                  </>
+                )}
+              </motion.button>
+              
+              <AnimatePresence>
+                {remaining > 1 && cardPhase === 'idle' && (
+                  <motion.button
+                    key="shuffle-btn"
+                    className="shuffle-btn"
+                    onClick={() => {
+                      onReshuffle();
+                      // Optional: play a fast sound or just let it happen silently
+                    }}
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
+                  >
+                    <span className="shuffle-btn__icon">🔀</span> Xào lại bài
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

@@ -8,7 +8,7 @@ import './index.css';
 import './App.css';
 
 function App() {
-  const { state, startGame, drawNext, resetKeepConfig, goToSetup, resetFull, goToSummary } = useGameState();
+  const { state, startGame, drawNext, resetKeepConfig, goToSetup, resetFull, goToSummary, reshuffleRemaining } = useGameState();
   const { phase, config, results } = state;
 
   return (
@@ -31,6 +31,7 @@ function App() {
             onDraw={drawNext}
             onViewSummary={goToSummary}
             onGoToSetup={goToSetup}
+            onReshuffle={reshuffleRemaining}
           />
         )}
 

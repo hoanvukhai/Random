@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { GameState, GameConfig } from '../types';
 import { DEFAULT_CONFIG } from '../types';
-import { buildShuffledQueue } from '../utils/shuffle';
+import { buildShuffledQueue, shuffle } from '../utils/shuffle';
 
 const GAME_KEY = 'football-randomizer-state';
 const CONFIG_KEY = 'football-randomizer-config';
@@ -123,5 +123,13 @@ export function useGameState() {
     setState((prev) => ({ ...prev, phase: 'summary' }));
   }, [setState]);
 
-  return { state, startGame, drawNext, resetKeepConfig, goToSetup, resetFull, goToSummary };
+  /** Reshuffle the remaining cards in the queue. */
+  const reshuffleRemaining = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      shuffledQueue: shuffle(prev.shuffledQueue),
+    }));
+  }, [setState]);
+
+  return { state, startGame, drawNext, resetKeepConfig, goToSetup, resetFull, goToSummary, reshuffleRemaining };
 }
