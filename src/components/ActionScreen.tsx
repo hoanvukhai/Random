@@ -36,8 +36,17 @@ const ActionScreen: React.FC<ActionScreenProps> = ({
   const flipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const drawn = results.length;
-  const remaining = totalPlayers - drawn;
-  const isAllDone = remaining === 0;
+  const isAllDone = drawn === totalPlayers && cardPhase === 'revealed';
+
+  // Calculate if we actually have different cards left to shuffle
+  const halfA = Math.ceil(totalPlayers / 2);
+  const halfB = Math.floor(totalPlayers / 2);
+  const drawnA = results.filter((r) => r.team === 'A').length;
+  const drawnB = results.filter((r) => r.team === 'B').length;
+  const remainingA = halfA - drawnA;
+  const remainingB = halfB - drawnB;
+  const canShuffle = remainingA > 0 && remainingB > 0;
+
   const teamACount = results.filter((r) => r.team === 'A').length;
   const teamBCount = results.filter((r) => r.team === 'B').length;
 
@@ -232,7 +241,7 @@ const ActionScreen: React.FC<ActionScreenProps> = ({
               </motion.button>
               
               <AnimatePresence>
-                {remaining > 1 && cardPhase === 'idle' && (
+                {canShuffle && cardPhase === 'idle' && (
                   <motion.button
                     key="shuffle-btn"
                     className="shuffle-btn"
